@@ -184,13 +184,13 @@ class Star {
         let gridStr;
         let gridX, gridY;
         while (gridStr === undefined || this.starsByGrid[gridStr]) {
-            gridX = Math.floor(Math.random() * 100);
-            gridY = Math.floor(Math.random() * 100);
+            gridX = Math.floor(Math.random() * 10);
+            gridY = Math.floor(Math.random() * 10);
             gridStr = `${gridX}:${gridY}`;
         }
         this.starsByGrid[gridStr] = this;
-        const posX = 10 * gridX + Math.floor(Math.random() * 5);
-        const posY = 10 * gridY + Math.floor(Math.random() * 5);
+        const posX = 5 * gridX + Math.floor(Math.random());
+        const posY = 5 * gridY + Math.floor(Math.random());
         this.pos = {x: posX, y: posY};
 
         const numPlanets = Math.floor(Math.random() * 5);
@@ -349,16 +349,41 @@ class Planet extends Fightable {
 }
 
 class Game {
-    /**
-     *
-     * @param {Player[]} players
-     * @param {Star[]} stars
-     * @param {Planet[]} planets
-     */
-    constructor(players, stars, planets) {
-        this.players = players;
+    constructor() {
+        this.cache = {};
+        this.nTurns = 0;
+        const stars = [];
+        const planets = [];
+        for (let i = 0; i < 50; i++) {
+            let s = new Star();
+            s.initRandom();
+            stars.push(s);
+            planets.push(...s.planets);
+        }
         this.stars = stars;
         this.planets = planets;
+
+        const createPlayer = (name, color, race) => {
+            let star = new Star().initRandom();
+            let planet = new Planet(star);
+            planet.initFromType(races[race].homePlanetType);
+            star.planets.push(planet);
+            stars.push(star);
+            planets.push(planet);
+            return new Player(name, color, race, planet, star);
+        };
+
+        const players = [
+            createPlayer('Caesar', '#f00', 'humans'),
+            createPlayer('Murderator', '#0ea', 'necruans'),
+        ];
+        players.forEach((p) => {
+            p.techQueue.push(new ResearchProject('lab'));
+        });
+        this.players = players;
+
+        this.mainPlayer = players[0];
+
     }
 
     turn() {
@@ -374,6 +399,26 @@ class Game {
         for (let i = 0; i < this.players.length; i++) {
             const p = this.players[i];
             p.turn();
+        }
+        this.nTurns++;
+    }
+
+    renderGalaxyMap() {
+        const div = this.cache.div = this.cache.div || document.querySelector('#moony .starboundaries');
+        for (let i = 0; i < this.stars.length; i++) {
+            const star = this.stars[i];
+            const starimg = document.createElement('span');
+            starimg.classList.add('starimg');
+            starimg.style.left = `${star.pos.x}vw`;
+            starimg.style.top = `${star.pos.y}vh`;
+            div.appendChild(starimg);
+
+            const starname = document.createElement('span');
+            starname.classList.add('starname');
+            starname.innerText = star.name;
+            starname.style.left = `${star.pos.x - 0.5}vw`;
+            starname.style.top = `${star.pos.y + 1}vh`;
+            div.appendChild(starname);
         }
     }
 }
@@ -416,44 +461,6 @@ const races = {
         homePlanetType: {size: 'medium', minerals: 'medium', climate: 'temperate', curiosity: 'atypical'},
     },
 };
-
-
-function TEST() {
-
-    const stars = [];
-    const planets = [];
-    for (let i = 0; i < 50; i++) {
-        let s = new Star();
-        s.initRandom();
-        stars.push(s);
-        planets.push(...s.planets);
-    }
-
-    const createPlayer = (name, color, race) => {
-        let star = new Star().initRandom();
-        let planet = new Planet(star);
-        planet.initFromType(races[race].homePlanetType);
-        star.planets.push(planet);
-        stars.push(star);
-        planets.push(planet);
-        return new Player(name, color, race, planet, star);
-    };
-
-    const players = [
-        createPlayer('Caesar', '#f00', 'humans'),
-        createPlayer('Murderator', '#0ea', 'necruans'),
-    ];
-
-    players.forEach((p) => {
-        p.techQueue.push(new ResearchProject('lab'));
-    });
-
-    const mainPlayer = players[0];
-    const game = new Game(players, stars, planets);
-    game.turn();
-    game.turn();
-    game.turn();
-}
 
 
 // typical planet characteristics. Combined they make up planets like:
@@ -990,6 +997,3 @@ Star.prototype.starNames = [
     "Zubeneschamali"
 ];
 Star.prototype.starsByGrid = {};
-
-
-TEST();

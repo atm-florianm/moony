@@ -1,0 +1,142 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+h1 { font-size: 130%; }
+h2 { font-size: 120%; }
+h3 { font-size: 110%; }
+
+#moony.parent {
+    display: flex;
+    height: 100vh;
+}
+
+#moony .scene_and_info {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/*
+Container section for the scene
+ */
+#moony .scene_c {
+    width: 1024px;
+    height: 768px;
+    background: black;
+}
+
+/*
+the scene itself;
+ width and height have to be defined as direct attributes (by js) unless we want scaling
+ */
+#moony .scene_c canvas {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/*
+Level instructions section
+ */
+#moony .info_level {
+    background: floralwhite;
+    width: 50%;
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+#moony .info_level > div {
+    padding: 2em;
+}
+
+#moony .info_level blockquote {
+    margin-left: 1em;
+    padding: 0.3em 1em;
+    border-left: solid 1px #bbb;
+    background-color: #efefef;
+    font-size: 85%;
+}
+#moony .info_level :not(pre) > code {
+    display: inline-block;
+    background-color: white;
+    color: #333;
+    padding: 0.1em 0.4em;
+    border: solid 1px #bbb;
+    border-radius: 2px;
+}
+
+
+/*
+Info section
+ */
+#moony .game_log {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 50%;
+    background: dimgray;
+    color: lightblue;
+}
+
+#moony .game_log nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+
+/*
+Code
+ */
+.moony pre {
+    background: black;
+    padding: 1.5em 1em;
+    border: solid 1px green;
+    border-radius: 3px;
+    color: lightblue;
+}
+
+
+#moony .finish_msg {
+    display: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    max-height: 43vh;
+    background-color: #324;
+    font-size: 200%;
+    overflow-y: auto;
+    font-weight: bold;
+}
+
+#moony .finish_msg.visible {
+    display: block;
+}
+
+.scene_c {
+    position: relative;
+}
+
+.starboundaries {
+    position: relative;
+    margin: 60px;
+}
+
+span.starimg {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+span.starname {
+    position: absolute;
+    font-size: 6pt;
+    color: aqua;
+}
