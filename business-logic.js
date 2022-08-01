@@ -183,14 +183,19 @@ class Star {
 
         let gridStr;
         let gridX, gridY;
+
+        // l'objet starsByGrid est juste là pour s'assurer qu'on n'a pas plus d'une étoile par "case" de notre "grille"
+        // valeurs entre 0 et 9
         while (gridStr === undefined || this.starsByGrid[gridStr]) {
             gridX = Math.floor(Math.random() * 10);
             gridY = Math.floor(Math.random() * 10);
             gridStr = `${gridX}:${gridY}`;
         }
         this.starsByGrid[gridStr] = this;
-        const posX = 5 * gridX + Math.floor(Math.random());
-        const posY = 5 * gridY + Math.floor(Math.random());
+
+        // au sein d'une "case", on positionne l'étoile aléatoirement
+        const posX = (10 * gridX + Math.floor(Math.random()*8));
+        const posY = (10 * gridY + Math.floor(Math.random()*8));
         this.pos = {x: posX, y: posY};
 
         const numPlanets = Math.floor(Math.random() * 5);
@@ -409,15 +414,15 @@ class Game {
             const star = this.stars[i];
             const starimg = document.createElement('span');
             starimg.classList.add('starimg');
-            starimg.style.left = `${star.pos.x}vw`;
-            starimg.style.top = `${star.pos.y}vh`;
+            starimg.style.left = `${star.pos.x}%`;
+            starimg.style.top = `${star.pos.y}%`;
             div.appendChild(starimg);
 
             const starname = document.createElement('span');
             starname.classList.add('starname');
             starname.innerText = star.name;
-            starname.style.left = `${star.pos.x - 0.5}vw`;
-            starname.style.top = `${star.pos.y + 1}vh`;
+            starname.style.left = `${star.pos.x - 0.5}%`;
+            starname.style.top = `${star.pos.y + 1}%`;
             div.appendChild(starname);
         }
     }

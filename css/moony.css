@@ -124,7 +124,9 @@ Code
 
 .starboundaries {
     position: relative;
-    margin: 60px;
+    margin: 30px;
+    width: calc(100% - 60px);
+    height: calc(100% - 60px);
 }
 
 span.starimg {
