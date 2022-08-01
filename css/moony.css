@@ -129,16 +129,40 @@ Code
     height: calc(100% - 60px);
 }
 
-span.starimg {
+input.starimg {
     position: absolute;
-    width: 5px;
-    height: 5px;
+    appearance: none;
+    width: 2px;
+    height: 2px;
     background: white;
     cursor: pointer;
     border-radius: 4px;
+    animation-name: twinkle;
+    animation-iteration-count: infinite;
+    animation-duration: 3s;
 }
-span.starname {
+label.starname {
     position: absolute;
     font-size: 6pt;
     color: aqua;
+    cursor: pointer;
 }
+
+@keyframes twinkle {
+    0% {
+        box-shadow: 0px 0px 1px cyan;
+        width: 2px; height: 2px;
+    }
+
+    50% {
+        box-shadow: 0px 0px 7px white;
+        width: 4px; height: 4px;
+        transform: translate(-20%, -20%);
+    }
+
+    100% {
+        box-shadow: 0px 0px 1px cyan;
+        width: 2px; height: 2px;
+    }
+}
+

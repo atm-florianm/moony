@@ -412,14 +412,19 @@ class Game {
         const div = this.cache.div = this.cache.div || document.querySelector('#moony .starboundaries');
         for (let i = 0; i < this.stars.length; i++) {
             const star = this.stars[i];
-            const starimg = document.createElement('span');
+            const starimg = document.createElement('input');
+            starimg.type = 'checkbox';
             starimg.classList.add('starimg');
+            starimg.name = star.name;
+            starimg.id = star.name;
             starimg.style.left = `${star.pos.x}%`;
             starimg.style.top = `${star.pos.y}%`;
+            starimg.style.animationDuration = `${1+Math.random()*3}s`;
             div.appendChild(starimg);
 
-            const starname = document.createElement('span');
+            const starname = document.createElement('label');
             starname.classList.add('starname');
+            starname.setAttribute('for', star.name);
             starname.innerText = star.name;
             starname.style.left = `${star.pos.x - 0.5}%`;
             starname.style.top = `${star.pos.y + 1}%`;
