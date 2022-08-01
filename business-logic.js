@@ -176,6 +176,7 @@ class Star {
         this.name = name;
         this.pos = {x: 0, y: 0};
         this.planets = [];
+        this.colorclass = 'normal';
     }
 
     initRandom() {
@@ -197,6 +198,8 @@ class Star {
         const posX = (10 * gridX + Math.floor(Math.random()*8));
         const posY = (10 * gridY + Math.floor(Math.random()*8));
         this.pos = {x: posX, y: posY};
+
+        this.colorclass = ['normal', 'red', 'blue'].pick();
 
         const numPlanets = Math.floor(Math.random() * 5);
         for (let i = 0; i < numPlanets; i++) {
@@ -359,7 +362,7 @@ class Game {
         this.nTurns = 0;
         const stars = [];
         const planets = [];
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 60; i++) {
             let s = new Star();
             s.initRandom();
             stars.push(s);
@@ -412,21 +415,23 @@ class Game {
         const div = this.cache.div = this.cache.div || document.querySelector('#moony .starboundaries');
         for (let i = 0; i < this.stars.length; i++) {
             const star = this.stars[i];
-            const starimg = document.createElement('input');
+            const starimg = document.createElement('span');
             starimg.type = 'checkbox';
             starimg.classList.add('starimg');
             starimg.name = star.name;
             starimg.id = star.name;
             starimg.style.left = `${star.pos.x}%`;
             starimg.style.top = `${star.pos.y}%`;
-            starimg.style.animationDuration = `${1+Math.random()*3}s`;
+            starimg.style.animationDuration = `${4+Math.random()*6}s`;
+
+            if (star.colorclass) starimg.classList.add(star.colorclass);
             div.appendChild(starimg);
 
             const starname = document.createElement('label');
             starname.classList.add('starname');
             starname.setAttribute('for', star.name);
             starname.innerText = star.name;
-            starname.style.left = `${star.pos.x - 0.5}%`;
+            starname.style.left = `${star.pos.x}%`;
             starname.style.top = `${star.pos.y + 1}%`;
             div.appendChild(starname);
         }

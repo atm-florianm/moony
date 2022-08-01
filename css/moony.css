@@ -129,40 +129,62 @@ Code
     height: calc(100% - 60px);
 }
 
-input.starimg {
+.starimg {
     position: absolute;
     appearance: none;
     width: 2px;
     height: 2px;
-    background: white;
+    background: #aaf;
     cursor: pointer;
     border-radius: 4px;
     animation-name: twinkle;
     animation-iteration-count: infinite;
     animation-duration: 3s;
+    animation-timing-function: ease-out;
 }
+
+.starimg:before, .starimg:after {
+    content: " ";
+    display: block;
+    position: relative;
+    width: 20px;
+    height: 1px;
+    border-radius: 100vh;
+    background-color: #ffc555;
+    filter: blur(3px);
+    opacity: 0.5;
+    transform: translateX(-50%);
+    transform-origin: left;
+}
+
+.starimg:after {
+    transform: rotate(90deg)  translateX(-50%);
+}
+
 label.starname {
     position: absolute;
     font-size: 6pt;
-    color: aqua;
+    color: #777;
     cursor: pointer;
+    transform: translateX(-50%);
+}
+
+.starimg.red {
+    filter: hue-rotate(35deg);
+}
+
+.starimg.blue {
+    filter: hue-rotate(-20deg);
 }
 
 @keyframes twinkle {
     0% {
-        box-shadow: 0px 0px 1px cyan;
-        width: 2px; height: 2px;
+        opacity: 0.7;
     }
 
     50% {
-        box-shadow: 0px 0px 7px white;
-        width: 4px; height: 4px;
-        transform: translate(-20%, -20%);
-    }
-
-    100% {
-        box-shadow: 0px 0px 1px cyan;
-        width: 2px; height: 2px;
+        opacity: 1;
+        transform: scale(1.5);
     }
 }
 
