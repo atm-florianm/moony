@@ -6,13 +6,16 @@
 class Player {
     /**
      *
+     * @param {Number} n
      * @param {String} name
      * @param {String} color
      * @param {String} raceName
      * @param {Planet} homePlanet
      * @param {Star}   homeStar
      */
-    constructor(name, color, raceName, homePlanet, homeStar) {
+    constructor(n, name, color, raceName, homePlanet, homeStar) {
+        this.n = n;
+        this.classname = `player${this.n}`;
         this.name = name;
         this.color = color;
         this.race = races[raceName];
@@ -177,6 +180,7 @@ class Star {
         this.pos = {x: 0, y: 0};
         this.planets = [];
         this.colorclass = 'normal';
+        this.owners = [];
     }
 
     initRandom() {
@@ -371,14 +375,18 @@ class Game {
         this.stars = stars;
         this.planets = planets;
 
+        let nPlayers = 0;
         const createPlayer = (name, color, race) => {
+            nPlayers++;
             let star = new Star().initRandom();
             let planet = new Planet(star);
             planet.initFromType(races[race].homePlanetType);
             star.planets.push(planet);
             stars.push(star);
             planets.push(planet);
-            return new Player(name, color, race, planet, star);
+            const player = new Player(nPlayers, name, color, race, planet, star);
+            star.owners.push(player);
+            return player;
         };
 
         const players = [
@@ -424,6 +432,9 @@ class Game {
             starimg.style.top = `${star.pos.y}%`;
             starimg.style.animationDuration = `${4+Math.random()*6}s`;
 
+            if (star.owners.length) {
+                star.owners.forEach((o) => starimg.classList.add(o.classname));
+            }
             if (star.colorclass) starimg.classList.add(star.colorclass);
             div.appendChild(starimg);
 

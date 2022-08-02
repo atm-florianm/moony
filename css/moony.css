@@ -1,3 +1,16 @@
+:root {
+    --team-hue: 0;
+    --team-saturation: 50%;
+    --team-lightness: 100%;
+}
+
+[class*="player"] {
+    --team-hue: 0;
+    --team-lightness: 40%;
+    --team-saturation: 100%;
+}
+
+
 html, body {
     padding: 0;
     margin: 0;
@@ -134,7 +147,7 @@ Code
     appearance: none;
     width: 2px;
     height: 2px;
-    background: #aaf;
+    background-color: hsl(var(--team-hue, 0), var(--team-saturation), var(--team-lightness, 100%));
     cursor: pointer;
     border-radius: 4px;
     animation-name: twinkle;
@@ -150,7 +163,7 @@ Code
     width: 20px;
     height: 1px;
     border-radius: 100vh;
-    background-color: #ffc555;
+    background-color: hsl(var(--team-hue, 0), var(--team-saturation), var(--team-lightness, 100%));
     filter: blur(3px);
     opacity: 0.5;
     transform: translateX(-50%);
@@ -167,14 +180,6 @@ label.starname {
     color: #777;
     cursor: pointer;
     transform: translateX(-50%);
-}
-
-.starimg.red {
-    filter: hue-rotate(35deg);
-}
-
-.starimg.blue {
-    filter: hue-rotate(-20deg);
 }
 
 @keyframes twinkle {
