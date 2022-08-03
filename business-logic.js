@@ -249,15 +249,16 @@ class Planet extends Fightable {
      * Initialise les propriétés de la planète en fonction de caractéristiques prédéfinies de
      * taille, minéraux, climat et intérêt scientifique
      *
-     * @param {Object} types
-     * @param {String} types.size
-     * @param {String} types.minerals
-     * @param {String} types.climate
-     * @param {String} types.curiosity
+     * @param {Object} type
+     * @param {String} type.size
+     * @param {String} type.minerals
+     * @param {String} type.climate
+     * @param {String} type.curiosity
      */
-    initFromType(types) {
+    initFromType(type) {
+        this.type = type;
         Object.keys(planetTypes).forEach((characteristic) => {
-            const props = planetTypes[characteristic][types[characteristic]];
+            const props = planetTypes[characteristic][type[characteristic]];
             for (const k in props) {
                 if (props[k] === Object(props[k])) {
                     for (const l in props[k]) {
@@ -272,13 +273,13 @@ class Planet extends Fightable {
     }
 
     initRandom() {
-        let characteristics = {
+        let type = {
             'size': randKey(planetTypes.size),
             'minerals': randKey(planetTypes.minerals),
             'climate': randKey(planetTypes.climate),
             'curiosity': randKey(planetTypes.curiosity),
         };
-        return this.initFromType(characteristics);
+        return this.initFromType(type);
     }
 
     turn() {
@@ -357,6 +358,36 @@ class Planet extends Fightable {
 
         // l'excédent ou le déficit sont reportés sur le joueur
         this.ownerPlayer.money += balance.$;
+    }
+
+    getOverview() {
+        let characteristics = Object.values(this.type).join(', ');
+        let owner = 'uninhabited'
+        if (this.ownerPlayer) {
+            owner = this.ownerPlayer.race.name;
+        }
+
+        let planetBtn;
+
+        if (this.ownerPlayer === game.mainPlayer) {
+            planetBtn = E('button', {
+                click: () => game.setHighlightedPlanet(this),
+                innerText: 'Planet settings',
+            });
+        } else {
+            planetBtn = E('button', {
+                disabled: 1,
+                innerText: 'Ø',
+            })
+        }
+
+        const ret = E('span', {
+            children: [
+                planetBtn,
+                E('span', {innerText: `[${owner}] ${characteristics}`}),
+            ]
+        });
+        return ret;
     }
 }
 
@@ -444,8 +475,30 @@ class Game {
             starname.innerText = star.name;
             starname.style.left = `${star.pos.x}%`;
             starname.style.top = `${star.pos.y + 1}%`;
+            starname.addEventListener('click', () => this.setHighlightedStar(star));
             div.appendChild(starname);
         }
+    }
+
+    setHighlightedStar(star) {
+        const systemDetails = this.cache.systemDetails =
+            this.cache.systemDetails || document.querySelector('#moony .system-details');
+        systemDetails.innerHTML = '';
+
+        const planetList = E('ul');
+
+        star.planets.forEach((p) => {
+            const li = E('li', {className: 'planet'});
+            planetList.appendChild(li);
+            li.appendChild(p.getOverview());
+        });
+
+
+        systemDetails.appendChild(planetList);
+    }
+
+    setHighlightedPlanet(planet) {
+        console.log(planet);
     }
 }
 

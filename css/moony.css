@@ -1,13 +1,19 @@
 :root {
+    --team-scale: 100%;
     --team-hue: 0;
     --team-saturation: 50%;
     --team-lightness: 100%;
 }
 
 [class*="player"] {
+    --team-scale: 500%;
     --team-hue: 0;
     --team-lightness: 40%;
     --team-saturation: 100%;
+}
+
+.player1 {
+    --team-hue: 40deg;
 }
 
 
@@ -102,7 +108,6 @@ Info section
     align-items: stretch;
 }
 
-
 /*
 Code
  */
@@ -113,7 +118,6 @@ Code
     border-radius: 3px;
     color: lightblue;
 }
-
 
 #moony .finish_msg {
     display: none;
@@ -147,6 +151,7 @@ Code
     appearance: none;
     width: 2px;
     height: 2px;
+    transform: scale(var(--team-scale, 1));
     background-color: hsl(var(--team-hue, 0), var(--team-saturation), var(--team-lightness, 100%));
     cursor: pointer;
     border-radius: 4px;
